@@ -33,6 +33,20 @@ class Endroit:
 
         return deplacement_final
 
+    def get_deplacement_libre(self, game):
+        deplacements = self.get_deplacement(game.endroits)
+        # print("Ce sont:")
+        
+        libres = []
+        for deplacement in deplacements:
+            if deplacement not in game.get_occupe():
+                libres.append(deplacement)
+                
+        # for deplacement in libres:
+        #     print("", deplacement.id)
+            
+        return libres
+    
     # def best_chemin(self,occuped: List['Endroit'],but):
     #     chemin = []
     #     break_test = False

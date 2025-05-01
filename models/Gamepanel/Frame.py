@@ -116,15 +116,21 @@ class Frame(Tk):
         index = 0
         depart = [300, 100]
         canvas = self.canvas
+        
+        for cercle in self.cercles:
+           canvas.tag_unbind(cercle, '<Button-1>')        
 
         # background des afaka andehanana
         for endroit in self.game.endroits:
-            if endroit in self.game.voleur.emplacement.get_deplacement(self.game.endroits):
+            if endroit in self.game.voleur.get_moves(self.game):
+                print("", endroit.id)
                 canvas.itemconfig(self.cercles[endroit.id], fill="yellow")
                 
                 canvas.tag_bind(self.cercles[endroit.id], '<Button-1>', lambda event, lieu=endroit: self.je_joue(lieu))
             else:
                 canvas.itemconfig(self.cercles[endroit.id], fill="white")
+
+
 
         # chiffres
         for point in self.points:

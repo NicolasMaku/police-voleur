@@ -9,10 +9,7 @@ class Acteur(metaclass=ABCMeta):
         self.emplacement = emplacement
 
     def get_moves(self, game):
-        empty = []
-        for voisin in self.emplacement.get_deplacement(game.endroits):
-            empty.append(voisin)
-        return empty
+        return self.emplacement.get_deplacement_libre(game)
 
     def deplacer(self, lieu: Endroit, frame):
         self.emplacement = lieu
