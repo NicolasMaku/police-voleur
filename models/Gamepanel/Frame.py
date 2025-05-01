@@ -1,7 +1,9 @@
 import sys
 import os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
+from models.Lieu.Endroit import Endroit
 import time
 import tkinter
 from tkinter import *
@@ -63,11 +65,15 @@ class Frame(Tk):
 
         rayon_petit = 20
         # background des cercles
+        # idx = 0
         for point in self.points:
-            self.cercles.append(canvas.create_oval(point.x - rayon_petit + depart[0], point.y - rayon_petit + depart[1],
+            cercle = canvas.create_oval(point.x - rayon_petit + depart[0], point.y - rayon_petit + depart[1],
                                                    point.x + rayon_petit + depart[0], point.y + rayon_petit + depart[1],
                                                    outline="red",
-                                                   fill="white"))
+                                                   fill="white")
+            # canvas.create_text(point.x, point.y, text=str(idx))
+            # idx += 1
+            self.cercles.append(cercle)
 
         def valider():
             valeur = int(self.move_input.get())
@@ -91,6 +97,19 @@ class Frame(Tk):
 
         self.rejouer = tkinter.Button(self, text="Rejouer", command=rejouer)
         self.rejouer.pack()
+    
+    def je_joue(self, lieu: Endroit):
+        self.game.voleur.deplacer(lieu, self)
+        
+        # valeur = int(self.move_input.get())
+        # self.move_input.delete(0, tkinter.END)
+        # self.game.voleur.emplacement = self.game.endroits[valeur]
+        # self.update()
+        self.my_turn()
+        self.update()
+        self.game.evaluer()
+        if self.game.gagnant is not None:
+            self.game.aGagner()
 
     def update(self):
         rayon_petit = 20
@@ -102,8 +121,8 @@ class Frame(Tk):
         for endroit in self.game.endroits:
             if endroit in self.game.voleur.emplacement.get_deplacement(self.game.endroits):
                 canvas.itemconfig(self.cercles[endroit.id], fill="yellow")
-                # print(f"endroit : {endroit.id}")
-                canvas.tag_bind(self.cercles[endroit.id], '<Button-1>', lambda event: self.game.voleur.deplacer(endroit, self))
+                
+                canvas.tag_bind(self.cercles[endroit.id], '<Button-1>', lambda event, lieu=endroit: self.je_joue(lieu))
             else:
                 canvas.itemconfig(self.cercles[endroit.id], fill="white")
 

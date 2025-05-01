@@ -35,7 +35,7 @@ class Game:
 
         self.liens = liens
         for i in range(21):
-            # print(i)
+            print(i)
             self.endroits.append(Endroit(i, self.liens[i], distances[i]))
 
     def get_deplacement_endroit(self, i):
